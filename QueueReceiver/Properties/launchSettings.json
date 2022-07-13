@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "QueueReceiver": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "environment": "Development"
+      }
+    }
+  }
+}
