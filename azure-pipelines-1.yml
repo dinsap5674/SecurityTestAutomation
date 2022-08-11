@@ -34,6 +34,14 @@ steps:
     publishWebProjects: true
     arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)'
 
+- task: SnykSecurityScan@1
+  inputs:
+    serviceConnectionEndpoint: 'Snyk Service Connection'
+    testType: 'app'
+    monitorWhen: 'always'
+    failOnIssues: true
+    additionalArguments: '--all-projects'
+
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact'
   inputs:
@@ -41,11 +49,4 @@ steps:
     ArtifactName: 'drop'
     publishLocation: 'Container'
 
-- task: SnykSecurityScan@1
-  inputs:
-    serviceConnectionEndpoint: 'Snyk Service Connection'
-    testType: 'app'
-    targetFile: 'D:\a\1\s\TaskWebAPI.sln'
-    monitorWhen: 'always'
-    failOnIssues: true
 
