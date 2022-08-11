@@ -10,7 +10,7 @@ pool:
   vmImage: ubuntu-latest
 
 variables:
-  buildConfiguration: 'Release'
+  BuildConfiguration: 'Release'
 
 steps:
 - task: DotNetCoreCLI@2
