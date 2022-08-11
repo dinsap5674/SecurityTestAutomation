@@ -32,6 +32,8 @@ steps:
   inputs:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
+  enabled: false
+
 - task: SnykSecurityScan@1
   displayName: 'Security scanning'
   inputs:
