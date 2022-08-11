@@ -33,8 +33,10 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 - task: SnykSecurityScan@1
+  displayName: 'Security scanning'
   inputs:
     serviceConnectionEndpoint: 'Snyk Service Connection'
     testType: 'app'
     monitorWhen: 'always'
     failOnIssues: true
+    targetFile: 'D:\a\1\s\TaskWebAPI.sln'
