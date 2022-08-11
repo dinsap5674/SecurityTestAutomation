@@ -41,3 +41,11 @@ steps:
     ArtifactName: 'drop'
     publishLocation: 'Container'
 
+- task: SnykSecurityScan@1
+  inputs:
+    serviceConnectionEndpoint: 'Snyk Service Connection'
+    testType: 'app'
+    targetFile: 'D:\a\1\s\TaskWebAPI.sln'
+    monitorWhen: 'always'
+    failOnIssues: true
+
