@@ -1,0 +1,14 @@
+{
+  "dependencies": {
+    "storage1": {
+      "type": "storage",
+      "ignored": "true"
+    },
+    "secrets1": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.KeyVault/vaults/SecurityAutomationKV-dev",
+      "type": "secrets.keyVault",
+      "connectionId": "VaultUri",
+      "secretStore": null
+    }
+  }
+}
