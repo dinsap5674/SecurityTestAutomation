@@ -40,7 +40,8 @@ namespace QueueReceiver
                     appConfig.AddJsonFile(
                         $"appsettings.{hostContext.HostingEnvironment.EnvironmentName}.json",
                         optional: true, reloadOnChange: true);
-
+                    
+                    //KeyVault Config
                     var keyVaultEndpoint = new Uri(Environment.GetEnvironmentVariable("VaultUri"));
                         appConfig.AddAzureKeyVault(keyVaultEndpoint, new DefaultAzureCredential());
                 })
