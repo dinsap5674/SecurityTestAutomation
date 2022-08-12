@@ -78,6 +78,8 @@ steps:
     command: 'publish'
     publishWebProjects: true
     arguments: '--configuration $(BuildConfiguration) --output $(Build.BinariesDirectory)/publish_output'
+    zipAfterPublish: false
+    modifyOutputPath: false
 
 - task: DotNetCoreCLI@2
   displayName: Publish WebJob
