@@ -121,7 +121,6 @@ steps:
     targetFile: 'D:\a\1\s\TaskWebAPI.sln'
     monitorWhen: 'always'
     failOnIssues: true
-    additionalArguments: '--all-projects'
   enabled: true
 
 - task: PublishBuildArtifacts@1
