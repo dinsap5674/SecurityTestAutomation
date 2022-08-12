@@ -46,7 +46,7 @@ namespace QueueReceiver
                     await _blobService.LogInformation(messageQueue.Email, "QueueMessage is Successfully stored in the sql table.");
                     
                     //Send Email if the attrubutes counts => 10
-                    if (attributeCount == 10)
+                    if (attributeCount >= 10)
                     {
                         await SendEmailHelper.SendEmail(messageQueue.Email, attributesList, _configuration, _logger, _blobService);
                     }

@@ -1,4 +1,5 @@
-﻿using BlobStorage.BlobService;
+﻿using Azure.Identity;
+using BlobStorage.BlobService;
 using BlobStorage.BlobService.Interfaces;
 using DAL.Repositories;
 using DAL.Repositories.Interfaces;
@@ -6,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -38,6 +40,10 @@ namespace QueueReceiver
                     appConfig.AddJsonFile(
                         $"appsettings.{hostContext.HostingEnvironment.EnvironmentName}.json",
                         optional: true, reloadOnChange: true);
+                    
+                    //KeyVault Config
+                    var keyVaultEndpoint = new Uri(Environment.GetEnvironmentVariable("VaultUri"));
+                        appConfig.AddAzureKeyVault(keyVaultEndpoint, new DefaultAzureCredential());
                 })
 
                 .ConfigureServices((hostContext, services) =>
