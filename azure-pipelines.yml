@@ -118,6 +118,7 @@ steps:
   inputs:
     serviceConnectionEndpoint: 'Snyk Service Connection'
     testType: 'app'
+    targetFile: 'D:\a\1\s\TaskWebAPI.sln'
     monitorWhen: 'always'
     failOnIssues: true
     additionalArguments: '--all-projects'
