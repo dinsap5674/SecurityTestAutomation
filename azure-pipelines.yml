@@ -3,42 +3,112 @@
 # Add steps that publish symbols, save build artifacts, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
 
+# trigger:
+# - master
+
+# pool:
+#   vmImage: 'windows-latest'
+
+# variables:
+#   solution: '**/*.sln'
+#   buildPlatform: 'Any CPU'
+#   buildConfiguration: 'Release'
+
+# steps:
+# - task: NuGetToolInstaller@1
+
+# - task: NuGetCommand@2
+#   inputs:
+#     restoreSolution: '$(solution)'
+
+# - task: VSBuild@1
+#   inputs:
+#     solution: '$(solution)'
+#     msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
+#     platform: '$(buildPlatform)'
+#     configuration: '$(buildConfiguration)'
+
+# - task: VSTest@2
+#   inputs:
+#     platform: '$(buildPlatform)'
+#     configuration: '$(buildConfiguration)'
+#   enabled: false
+
+# - task: SnykSecurityScan@1
+#   displayName: 'Security scanning'
+#   inputs:
+#     serviceConnectionEndpoint: 'Snyk Service Connection'
+#     testType: 'app'
+#     monitorWhen: 'always'
+#     failOnIssues: true
+#     targetFile: 'D:\a\1\s\TaskWebAPI.sln'
+
+# ASP.NET Core
+# Build and test ASP.NET Core projects targeting .NET Core.
+# Add steps that run tests, create a NuGet package, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+
 trigger:
 - master
 
 pool:
-  vmImage: 'windows-latest'
+  vmImage: ubuntu-latest
 
 variables:
-  solution: '**/*.sln'
-  buildPlatform: 'Any CPU'
-  buildConfiguration: 'Release'
+  BuildConfiguration: 'Release'
 
 steps:
-- task: NuGetToolInstaller@1
-
-- task: NuGetCommand@2
+- task: DotNetCoreCLI@2
+  displayName: Restore
   inputs:
-    restoreSolution: '$(solution)'
+    command: 'restore'
+    projects: '**/*.csproj'
+    feedsToUse: 'select'
 
-- task: VSBuild@1
+- task: DotNetCoreCLI@2
+  displayName: Build
   inputs:
-    solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+    command: 'build'
+    projects: '**/*.csproj'
+    arguments: '--configuration $(BuildConfiguration)'
 
-- task: VSTest@2
+- task: DotNetCoreCLI@2
+  displayName: Publish
   inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-  enabled: false
+    command: 'publish'
+    publishWebProjects: true
+    arguments: '--configuration $(BuildConfiguration) --output $(Build.BinariesDirectory)/publish_output'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'publish'
+    publishWebProjects: false
+    projects: '**/QueueReceiver.csproj'
+    arguments: '--configuration $(BuildConfiguration) --output $(Build.BinariesDirectory)/publish_output/App_Data/jobs/continuous/QueueReceiver'
+    zipAfterPublish: false
+    modifyOutputPath: false
+
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '$(Build.BinariesDirectory)/publish_output'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    replaceExistingArchive: true
 
 - task: SnykSecurityScan@1
-  displayName: 'Security scanning'
   inputs:
     serviceConnectionEndpoint: 'Snyk Service Connection'
     testType: 'app'
     monitorWhen: 'always'
     failOnIssues: true
-    targetFile: 'D:\a\1\s\TaskWebAPI.sln'
+    additionalArguments: '--all-projects'
+  enabled: false
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact'
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
+
