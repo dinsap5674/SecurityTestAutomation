@@ -51,6 +51,10 @@
 trigger:
  - master
 
+#For ubuntu OS
+# pool:
+#   vmImage: ubuntu-latest
+
 pool:
   vmImage: 'windows-latest'
 
@@ -99,6 +103,17 @@ steps:
     archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
     replaceExistingArchive: true
 
+#For Linux environment it is enough settings
+# - task: SnykSecurityScan@1
+#   inputs:
+#     serviceConnectionEndpoint: 'Snyk Service Connection'
+#     testType: 'app'
+#     monitorWhen: 'always'
+#     failOnIssues: true
+#     additionalArguments: '--all-projects'
+#   enabled: true
+
+#For windows
 - task: SnykSecurityScan@1
   inputs:
     serviceConnectionEndpoint: 'Snyk Service Connection'
