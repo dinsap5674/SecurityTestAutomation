@@ -13,7 +13,7 @@ namespace QueueReceiver.Helpers
     {
         public static async Task SendEmail(string email, List<string> attributes, IConfiguration configuration, ILogger logger, IBlobService blobService)
         {
-            var apiKey = configuration["SENDGRID_API_KEY"];
+            var apiKey = configuration["SendGridApiKey"];
             var client = new SendGridClient(apiKey);
             var from = new EmailAddress(configuration["SenderEmail"], "Example User");
             var subject = "Congratulations for sending some unique attribute";

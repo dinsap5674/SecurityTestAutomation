@@ -35,7 +35,7 @@ namespace DAL.Repositories
 
         public async Task<List<string>> GetAllAttributesPerEmailPerDay(string email)
         {
-            string sQuery = "SELECT Attributes FROM MessageQueue WHERE Date = @currentUtcDate AND Email = @email";
+            string sQuery = "SELECT Attributes FROM QueueMessage WHERE Date = @currentUtcDate AND Email = @email";
 
             using (SqlConnection con = (SqlConnection)Connection)
             {
@@ -53,7 +53,7 @@ namespace DAL.Repositories
 
         public async Task<int> InsertQueueMessage(QueueMessage message)
         {
-            string sQuery = "INSERT INTO MessageQueue ([Key], Email, Attributes) " +
+            string sQuery = "INSERT INTO QueueMessage ([Key], Email, Attributes) " +
                     "VALUES (@Key, @Email, @Attributes)";
             using (IDbConnection con = Connection)
             {
