@@ -73,13 +73,14 @@ steps:
     arguments: '--configuration $(BuildConfiguration)'
 
 - task: DotNetCoreCLI@2
-  displayName: Publish
+  displayName: Publish WebAPI
   inputs:
     command: 'publish'
     publishWebProjects: true
     arguments: '--configuration $(BuildConfiguration) --output $(Build.BinariesDirectory)/publish_output'
 
 - task: DotNetCoreCLI@2
+  displayName: Publish WebJob
   inputs:
     command: 'publish'
     publishWebProjects: false
