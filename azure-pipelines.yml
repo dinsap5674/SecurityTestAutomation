@@ -106,7 +106,7 @@ steps:
     monitorWhen: 'always'
     failOnIssues: true
     additionalArguments: '--all-projects'
-  enabled: false
+  enabled: true
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact'
