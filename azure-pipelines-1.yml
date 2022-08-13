@@ -3,9 +3,10 @@
 # Add steps that run tests, create a NuGet package, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
 
-# To test if the trigger will be disabled
-# trigger:
-# - master
+# It seems if the trigger is enabled while creating the pipline it cannot be disabled from code. 
+# It is disabled from piplinr setting
+trigger:
+- master
 
 pool:
   vmImage: ubuntu-latest
