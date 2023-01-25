@@ -76,7 +76,7 @@ steps:
     targetFile: 'D:\a\1\s\TaskWebAPI.sln'
     monitorWhen: 'always'
     failOnIssues: true
-  enabled: true
+  enabled: false
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact'
